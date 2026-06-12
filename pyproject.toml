@@ -1,0 +1,21 @@
+[project]
+name = "throughline-connector-kit"
+version = "0.1.0"
+description = "Sanitized four-method connector contract and sync-engine example from Throughline."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Dallas Crilley" }]
+dependencies = []
+
+[project.scripts]
+throughline-example = "throughline_connector_kit.example:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
