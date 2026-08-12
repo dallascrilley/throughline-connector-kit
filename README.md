@@ -74,6 +74,10 @@ https://dallascrilley.com/work/throughline
 This repo is the inspectable code companion for the four-method connector
 contract described in those pages.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Security reports go through [SECURITY.md](SECURITY.md).
+
 ## License
 
 MIT.
