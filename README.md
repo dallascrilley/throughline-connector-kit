@@ -1,5 +1,8 @@
 # Throughline Connector Kit
 
+[![CI](https://github.com/dallascrilley/throughline-connector-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/dallascrilley/throughline-connector-kit/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Sanitized extraction of the connector contract behind Throughline: one connector
 interface, a small sync engine, and a runnable synthetic CRM example.
 
