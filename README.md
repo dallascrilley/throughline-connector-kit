@@ -47,6 +47,36 @@ The connector knows the source schema and authentication. The engine knows
 sync semantics. That keeps destination-specific write logic out of connector
 implementations.
 
+## Credentials And Checkpoints
+
+Credentials live on the connector instance. Checkpoints live on the engine,
+keyed by connector name and entity type. That is the isolation this kit
+actually has.
+
+`authenticate()` is the only contract method that talks to auth. It returns
+`AuthContext` with a principal and scopes. The public type does not carry
+tokens or API keys. Production connectors may hold OAuth clients internally;
+this extract records only the principal. `SyncEngine.sync()` calls
+`authenticate()` and does not keep the return value. Secrets never enter the
+engine, the checkpoint map, or the destination key.
+
+A second org is a second connector instance, constructed with its own
+credentials and a distinct `name`. The engine does not take a tenant id.
+Mixing two orgs on one instance would be a construction mistake, not a merge
+the engine can perform.
+
+Checkpoints are engine-owned. `SyncEngine.checkpoints` is a
+`dict[tuple[str, str], datetime]` keyed `(connector.name, entity_type)`.
+Incremental `fetch_entities` receives that timestamp as `since`. Destination
+records use `NormalizedRecord.key`: `(source_system, entity_type, source_id)`.
+Two connectors with different names cannot advance each other's checkpoints
+or overwrite each other's rows.
+
+This is not a multi-tenant SaaS control plane. The example `SyncEngine` holds
+one connector and an in-memory destination. Production Throughline ran this
+shape for six vendor integrations at one company. The kit shows the boundary.
+It does not show a tenant registry, a credentials vault, or horizontal scale.
+
 ## Why This Is Sanitized
 
 The production Throughline system connected QuickBooks, Copper, Basecamp,
